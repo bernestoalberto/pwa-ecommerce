@@ -1,0 +1,63 @@
+{
+  "local":{
+    "host": "localhost",
+    "port": 5432,
+    "database": "moft_db",
+    "mongo_db": "mongodb://127.0.0.1/pushmessages",
+    "mongo_dbName":  "pushmessages",
+    "user": "postgres",
+    "password": "postgres",
+    "name": "PGSQL",
+    "dialect": "PostgreSQL",
+    "askForPassword": false,
+    "connectionTimeout": 15
+  },
+  "facebookAuth" : {
+    "callbackURL"   : "https://backend.eabonet.com/users/auth/facebook/callback",
+    "callbackURLocal"   : "http://localhost:5000/users/auth/facebook/callback",
+    "profileURL"    : "https://graph.facebook.com/v2.5/me?fields=first_name,last_name,email",
+    "profileFields" : ["id", "displayName", "photos", "email"]
+},
+"security": {
+  "jwt": {
+      "expirationTime": 10070,
+      "privateKey": "Rgny!L(piy,*{9q7X&{y_-SG{e&pqt[%@V$l*Dc_hG>>oUS=vX!y(1y<*u1^j;nwQP;ThPn*3a((wcf$_iyu20*+fhq+d04rxW7,lt:$N_IdrsA2[iG4BjQ&GPIwCGqT"
+  }
+},
+  "production":{
+    "host": "localhost",
+    "port": 5432,
+    "database": "moft_db",
+    "user": "postgres",
+    "password": "D3u1m@t@",
+    "mongo_url": "mongodb://mongoose:D3u1mata@127.0.0.1/cookies",
+    "name": "PGSQL",
+    "dialect": "PostgreSQL",
+    "askForPassword": false,
+    "connectionTimeout": 15
+  },
+  "remote_home":{
+    "host": "192.168.86.207",
+    "port": 5432,
+    "database": "moft_db",
+    "user": "postgres",
+    "mongo_url": "mongodb://mongoose:D3u1mata@192.168.86.207/cookies",
+    "password": "D3u1m@t@",
+    "name": "PGSQL",
+    "dialect": "PostgreSQL",
+    "askForPassword": false,
+    "connectionTimeout": 15
+  },
+  "remote_cloud":{
+    "host": "eabonet.com",
+    "port": 5432,
+    "database": "moft_db",
+    "user": "postgres",
+    "mongo_url": "mongodb://mongoose:D3u1mata@eabonet.com/cookies",
+    "password": "D3u1m@t@",
+    "name": "PGSQL",
+    "dialect": "PostgreSQL",
+    "askForPassword": false,
+    "connectionTimeout": 15
+  }
+}

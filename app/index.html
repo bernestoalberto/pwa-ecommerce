@@ -204,9 +204,8 @@
         <!-- Common bottom of screen -->
         <footer class="mdl-mini-footer">
             <div class="mdl-mini-footer__left-section">
-                <div class="mdl-logo">Furniture names and images courtesy of
-                  <a href="http://www.yellowdiva.com/products/" target="_blank">Yellow Diva</a>.
-                  Used by permission.
+                <div class="mdl-logo">
+                  <a href="https://pwa.eabonet.com" target="_blank">Moft 2019</a>
                 </div>
             </div>
         </footer>
@@ -259,8 +258,8 @@ function registerServiceWorker() {
   });
 }
 
-if (!('PushManager' in window)) {
-  consoel.log('Push isnt supported on this browser, disable or hide UI');
+if ('PushManager' in window) {
+  console.log('Push is supported on this browser');
   //return;
 }
 // check for Geolocation support
@@ -295,9 +294,9 @@ window.onload = function() {
 };
 
 function sendSubscriptionToBackEnd(subscription) {
-  let url = 'http//:localhost:5000/users/save-subscription';
-  //let url = 'https//:backend.eabonet.com/users/save-subscription';
-  return fetch('', {
+  let url = 'http://localhost:3003/save-subscription';
+  //let url = 'https://backend.eabonet.com/users/save-subscription';
+  return fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
