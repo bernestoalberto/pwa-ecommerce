@@ -4,3 +4,5 @@ dist/
 app.yaml
 vapid-keys.txt
 package-lock.json
+.vscode
+.config
