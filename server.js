@@ -16,13 +16,38 @@ const express = require('express');
 const path = require('path');
 let mongod = require('./nosql');
 const bodyParser = require('body-parser');
+const webpush = require('web-push');
+const vapidKeys = {
+  publicKey:
+'BLEub9GPG2JoR0sdvo64JM5pib0y3bH-swl1B9wXhW-Q10ZUjFBhmX5E4h7DfHVJ0SPJyhvJfBn0-O7tQNgUpZk',
+  privateKey: 'RcXlLdOuKaJrrms7Xd23qnqGyFplvyadOSnk-aC8ubA'
+};
+
+webpush.setVapidDetails(
+  'mailto:web-push-book@eabonet.com',
+  vapidKeys.publicKey,
+  vapidKeys.privateKey
+);
+
 const app = express();
+
+
+
+
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
+
+
+
 app.all('/checkout/', (req, res) => {
+  res.sendStatus(200);
+});
+
+app.all('/admin/', (req, res) => {
+  //res.redirect('dist/admin.html').sendStatus(200);
   res.sendStatus(200);
 });
 function getdate() {
@@ -46,6 +71,34 @@ const isValidSaveRequest = (req, res) => {
   }
   return true;
 };
+app.post('/trigger-push-msg/', function (req, res) {
+  return getSubscriptionsFromDatabase().then(function(subscriptions) {
+    let promiseChain = Promise.resolve();
+
+    for (let i = 0; i < subscriptions.length; i++) {
+      const subscription = subscriptions[i];
+      promiseChain = promiseChain.then(() => {
+        return triggerPushMsg(subscription, req.body.data.message);
+      });
+    }
+
+    return promiseChain;
+  }).then(() => {
+    res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({ data: { success: true } }));
+  })
+  .catch(function(err) {
+    res.status(500);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({
+      error: {
+        id: 'unable-to-send-messages',
+        message: `We were unable to send messages to all subscriptions : ` +
+          `'${err.message}'`
+      }
+    }));
+  });
+});
 
 app.post('/save-subscription/', function (req, res) {
   if (!isValidSaveRequest(req, res)) {
@@ -69,6 +122,20 @@ app.post('/save-subscription/', function (req, res) {
   });
 });
 
+function getSubscriptionsFromDatabase(){
+  return new Promise(function(resolve, reject) {
+    mongod.findAll().then((newDoc)=>{
+      resolve(newDoc);
+    });
+  });
+}
+function deleteSubscriptionFromDatabase(id){
+  return new Promise(function(resolve, reject) {
+    mongod.deleteOneSubscriptionbyId(id).then((newDoc)=>{
+      resolve(newDoc);
+    });
+  });
+}
 function saveSubscriptionToDatabase(subscription) {
   return new Promise(function(resolve, reject) {
     mongod.insertData(subscription.endpoint,['subs',subscription.endpoint],getdate()).then((newDoc)=>{
@@ -78,7 +145,17 @@ function saveSubscriptionToDatabase(subscription) {
   });
 };
 
-
+const triggerPushMsg = function(subscription, dataToSend) {
+  return webpush.sendNotification(subscription, dataToSend)
+  .catch((err) => {
+    if (err.statusCode === 404 || err.statusCode === 410) {
+      console.log('Subscription has expired or is no longer valid: ', err);
+      return deleteSubscriptionFromDatabase(subscription._id);
+    } else {
+      throw err;
+    }
+  });
+};
 
 
 

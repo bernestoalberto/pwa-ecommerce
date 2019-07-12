@@ -15,7 +15,8 @@ db.once('open',async function () {
     Schema = mongoose.Schema;
     ObjectId = Schema.ObjectId;
      //mongo.findUser({email: 'ebonetmoncada@gmail.com'});
-     //mongo.createCookiesCollection();
+     //mongo.createPushMessagesCollection();
+      //mongo.findAll();
       //mongo.insertData( 'ebonet34@acs.com','em','rtyu');
      //await mongo.updateUsername('ebonet', 'ebonet88');
      //await mongo.updatePasswordbyEmail('bernestoalberto@gmail.com', 'Pop');
@@ -84,13 +85,14 @@ let mongo = {
         })
 
     },
-    insertData(endpoint='',keys=['key','value'],date='yyyy/mm/dd'){
+    insertData(endpoint='',keys=['key','value'],date='yyyy/mm/dd',state = true){
         return new Promise((resolve,reject) => {
           PushMessages = (PushMessages) ? PushMessages  : mongo.createPushMessagesCollection();
 
         let PushMessagesData = {
           endpoint  : endpoint,
             keys: keys,
+            state: state,
             date: date
         };
 
@@ -130,6 +132,30 @@ let mongo = {
 });
 });
     },
+    findSubscriptionById(id){
+      return new Promise((resolve,reject) => {
+        PushMessages = (PushMessages) ? PushMessages  : mongo.createPushMessagesCollection();
+        PushMessages.find({id:id},function (err, ws) {
+              if(err)reject(err);
+                  resolve(ws);
+              })
+
+
+      });
+  },
+  deleteOneSubscriptionbyId(index){
+    return new Promise(resolve => {
+      PushMessages = (PushMessages) ? PushMessages  : mongo.createPushMessagesCollection();
+
+        User.findOneAndDelete({ id: index},(function (err, ws) {
+            if (err) return console.error(err);
+            console.dir(ws);
+            resolve(ws);
+        }));
+    })
+
+}
+    ,
     updateById(id, obj){
         return new Promise((resolve,reject) => {
             User = (User) ? User : mongo.createUSerCollection();
@@ -240,7 +266,8 @@ let mongo = {
     },
     findAll(){
         return new Promise((resolve) => {
-            Worksheet.find({},function (err,ws) {
+          PushMessages = (PushMessages) ? PushMessages  : mongo.createPushMessagesCollection();
+            PushMessages.find({},function (err,ws) {
                 let userMap = {};
                 ws.forEach(function (w) {
                     userMap[w._id] = w

@@ -6,3 +6,4 @@ vapid-keys.txt
 package-lock.json
 .vscode
 .config
+pnt.js

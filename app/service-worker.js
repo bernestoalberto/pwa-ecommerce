@@ -32,12 +32,28 @@ limitations under the License.
 
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
+self.addEventListener('push', function(event) {
+  const analyticsPromise = pushReceivedTracking();
+  const pushInfoPromise = fetch('/get-more-data')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(response) {
+      const title = response.data.userName + ' says...';
+      const message = response.data.message;
 
+      self.registration.showNotification(title, {
+        body: message
+      });
+    });
+
+  const promiseChain = Promise.all([
+    analyticsPromise,
+    pushInfoPromise
+  ]);
+
+  event.waitUntil(promiseChain);
+});
 /**
  * The workboxSW.precacheAndRoute() method efficiently caches and responds to
  * requests for URLs in the manifest.
