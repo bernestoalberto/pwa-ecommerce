@@ -15,12 +15,12 @@
 const express = require('express');
 const path = require('path');
 let mongod = require('./nosql');
+const config  = require('./.config/config.json');
 const bodyParser = require('body-parser');
 const webpush = require('web-push');
 const vapidKeys = {
-  publicKey:
-'BLEub9GPG2JoR0sdvo64JM5pib0y3bH-swl1B9wXhW-Q10ZUjFBhmX5E4h7DfHVJ0SPJyhvJfBn0-O7tQNgUpZk',
-  privateKey: 'RcXlLdOuKaJrrms7Xd23qnqGyFplvyadOSnk-aC8ubA'
+  publicKey: config.local.vapid_pub,
+  privateKey: config.local.vapid_priv
 };
 
 webpush.setVapidDetails(
