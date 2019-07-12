@@ -141,7 +141,7 @@ function saveSubscriptionToDatabase(subscription) {
     mongod.insertData(subscription.endpoint,['subs',subscription.endpoint],getdate()).then((newDoc)=>{
 
       resolve(newDoc._id);
-    });
+    }); 
   });
 };
 
