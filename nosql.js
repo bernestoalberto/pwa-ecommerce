@@ -2,8 +2,7 @@
 const config  = require('./.config/config.json');
   const mongoose =  require('mongoose');
 let url = config.local.mongo_db;
-const  bcrypt = require('bcrypt');
-const saltRounds = 10;
+
 
 mongoose.connect(url, {useNewUrlParser: true});
 // change on production the da name sessions by admin
@@ -105,33 +104,7 @@ let mongo = {
 
 });
     },
-    insertUSerData(email='user@domain.com',Username='username',password='Password'){
-        return new Promise((resolve,reject) => {
-            User = (User) ? User  : mongo.createUSerCollection();
 
-            bcrypt.genSalt(saltRounds, function(err, salt) {
-            if(err){
-                console.error(err);
-                reject(err);
-            }
-            bcrypt.hash(password, salt, function(err, hash) {
-                if(err)console.error(err);
-        let Userdata = {
-            email  : email,
-            Username: Username,
-            password: hash
-        };
-        //user = new User(Userdata);
-        //use schema.create to insert data into the db
-        User.create(Userdata, function (err, usr) {
-            if(err)console.error(err);
-            console.dir(usr);
-            resolve(usr);
-        });
-    });
-});
-});
-    },
     findSubscriptionById(id){
       return new Promise((resolve,reject) => {
         PushMessages = (PushMessages) ? PushMessages  : mongo.createPushMessagesCollection();
@@ -193,40 +166,8 @@ let mongo = {
             });
         });
     },
-    updatePasswordbyEmail(match,pass){
-        return new Promise((resolve,reject) => {
-            User = (User) ? User : mongo.createUSerCollection();
-            bcrypt.genSalt(saltRounds, function(err, salt) {
-                if(err)console.error(err);
-                bcrypt.hash(pass, salt, function(err, hash) {
-                    if(err)console.error(err);
-               User.updateOne({email:match}, {email:match, password: hash}, function(err,resp) {
-                if(err)reject(err);
-                console.log('password update' + resp.n);
-                console.log('password update' + resp.nModified);
-                resolve(resp);
-            });
-        });
-    });
-        });
-    },
-    updatePasswordbyUsername(match,pass){
-        return new Promise((resolve,reject) => {
-            User = (User) ? User : mongo.createUSerCollection();
-            bcrypt.genSalt(saltRounds, function(err, salt) {
-                if(err)console.error(err);
-                bcrypt.hash(pass, salt, function(err, hash) {
-                    if(err)console.error(err);
-               User.updateOne({Username:match}, {Username:match, password: hash}, function(err,resp) {
-                if(err)reject(err);
-                console.log('password update' + resp.n);
-                console.log('password update' + resp.nModified);
-                resolve(resp);
-            });
-        });
-    });
-        });
-    },
+
+
     deleteOneUserbyPassword(index){
         return new Promise(resolve => {
             User = (User) ? User  : mongo.createUSerCollection();
