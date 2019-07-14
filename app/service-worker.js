@@ -59,6 +59,7 @@ self.addEventListener('push', function(event) {
  * requests for URLs in the manifest.
  * See https://goo.gl/S9QRab
  */
+
 self.__precacheManifest = [
   {
     "url": "checkout.html",
@@ -67,10 +68,6 @@ self.__precacheManifest = [
   {
     "url": "favicon.ico",
     "revision": "b802fba5761ac4b0d89b812f4d637f4c"
-  },
-  {
-    "url": "images/about-hero-image.jpg",
-    "revision": "8416519ae2b5a1cf9a15b750afaf3994"
   },
   {
     "url": "images/delete.svg",
@@ -100,42 +97,7 @@ self.__precacheManifest = [
     "url": "images/og_image.jpg",
     "revision": "2aa407d02a881716d22daaf4d035adce"
   },
-  {
-    "url": "images/products/BarrelChair.jpg",
-    "revision": "8d89264d1515ef42e72a8550f1bf6b95"
-  },
-  {
-    "url": "images/products/C10.jpg",
-    "revision": "ff2c26fd99e5711308eaade646b554e2"
-  },
-  {
-    "url": "images/products/Cl2.jpg",
-    "revision": "f66af06555ec2ab57331fa804833459d"
-  },
-  {
-    "url": "images/products/CP03_blue.jpg",
-    "revision": "327073b6bdb702024ce6332cef29f586"
-  },
-  {
-    "url": "images/products/CPC_RECYCLED.jpg",
-    "revision": "86f6d6874edc03e48543099ad058e138"
-  },
-  {
-    "url": "images/products/CPFS.jpg",
-    "revision": "5a9f02005fc429b627350e8db675cb2f"
-  },
-  {
-    "url": "images/products/CPO2_red.jpg",
-    "revision": "d7744e1acb43af8dbc74f67fb923fd46"
-  },
-  {
-    "url": "images/products/CPT.jpg",
-    "revision": "853b21b5c962e555b4b6eacf89529848"
-  },
-  {
-    "url": "images/products/CS1.jpg",
-    "revision": "cffcd8f427eab15d91925fc261853e53"
-  },
+
   {
     "url": "images/products/house.jpg",
     "revision": "a7821b4c4e7ffc6d51caba3f229fd912"
